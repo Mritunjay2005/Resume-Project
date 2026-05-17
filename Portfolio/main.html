@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mritunjay Tiwari — Cloud & DevOps Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0d1117;
+    --surface2: #141b23;
+    --border: #1e2a38;
+    --accent: #00d4ff;
+    --accent2: #7c3aed;
+    --accent3: #10b981;
+    --gold: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --white: #ffffff;
+    --grad: linear-gradient(135deg, #00d4ff, #7c3aed);
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'DM Mono',monospace;
+    overflow-x:hidden;
+    cursor:none;
+  }
+
+  /* ─── CUSTOM CURSOR ─── */
+  .cursor{position:fixed;width:12px;height:12px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,background .2s;}
+  .cursor-ring{position:fixed;width:36px;height:36px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:transform .1s ease,width .2s,height .2s,border-color .2s;opacity:.5;}
+
+  /* ─── NOISE OVERLAY ─── */
+  body::before{
+    content:'';
+    position:fixed;inset:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:1000;opacity:.4;
+  }
+
+  /* ─── NAV ─── */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:500;
+    padding:20px 48px;
+    display:flex;justify-content:space-between;align-items:center;
+    background:rgba(8,12,16,.85);
+    backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    transition:all .3s;
+  }
+  .nav-logo{
+    font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;
+    background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    letter-spacing:-.02em;
+  }
+  .nav-links{display:flex;gap:32px;list-style:none;}
+  .nav-links a{
+    color:var(--muted);font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;
+    text-decoration:none;transition:color .2s;
+  }
+  .nav-links a:hover{color:var(--accent);}
+  .nav-cta{
+    padding:8px 20px;border:1px solid var(--accent);color:var(--accent);
+    font-family:'DM Mono',monospace;font-size:.78rem;letter-spacing:.05em;
+    background:transparent;cursor:none;transition:all .2s;text-decoration:none;
+  }
+  .nav-cta:hover{background:var(--accent);color:var(--bg);}
+
+  /* ─── HERO ─── */
+  #hero{
+    min-height:100vh;display:flex;align-items:center;
+    padding:120px 48px 80px;
+    position:relative;overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background: radial-gradient(ellipse 80% 60% at 60% 40%, rgba(0,212,255,.08) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 20% 80%, rgba(124,58,237,.1) 0%, transparent 50%);
+  }
+  .hero-grid{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(var(--border) 1px,transparent 1px),
+      linear-gradient(90deg,var(--border) 1px,transparent 1px);
+    background-size:60px 60px;
+    opacity:.3;
+    mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%);
+  }
+  .hero-content{position:relative;z-index:2;max-width:900px;}
+  .hero-tag{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);
+    border:1px solid rgba(0,212,255,.3);padding:6px 16px;margin-bottom:32px;
+    animation:fadeUp .8s ease both;
+  }
+  .hero-tag span{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite;}
+  .hero-name{
+    font-family:'Syne',sans-serif;font-weight:800;
+    font-size:clamp(3.5rem,8vw,7rem);
+    line-height:.95;letter-spacing:-.04em;
+    color:var(--white);
+    animation:fadeUp .8s .1s ease both;
+  }
+  .hero-name em{
+    font-family:'Instrument Serif',serif;font-style:italic;
+    background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .hero-title{
+    font-family:'Syne',sans-serif;font-size:clamp(1rem,2.5vw,1.4rem);
+    color:var(--muted);letter-spacing:.02em;margin-top:16px;
+    animation:fadeUp .8s .2s ease both;
+  }
+  .hero-desc{
+    max-width:600px;line-height:1.8;color:var(--text);opacity:.7;
+    margin-top:24px;font-size:.88rem;
+    animation:fadeUp .8s .3s ease both;
+  }
+  .hero-actions{display:flex;gap:16px;margin-top:40px;flex-wrap:wrap;animation:fadeUp .8s .4s ease both;}
+  .btn-primary{
+    padding:14px 32px;background:var(--accent);color:var(--bg);
+    font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;
+    letter-spacing:.05em;text-decoration:none;border:none;cursor:none;
+    transition:all .25s;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);
+  }
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(0,212,255,.4);}
+  .btn-outline{
+    padding:14px 32px;background:transparent;color:var(--text);
+    font-family:'Syne',sans-serif;font-weight:600;font-size:.88rem;
+    letter-spacing:.05em;text-decoration:none;border:1px solid var(--border);cursor:none;
+    transition:all .25s;
+  }
+  .btn-outline:hover{border-color:var(--accent);color:var(--accent);}
+  .hero-stats{
+    display:flex;gap:48px;margin-top:64px;padding-top:40px;
+    border-top:1px solid var(--border);
+    animation:fadeUp .8s .5s ease both;
+  }
+  .stat-num{
+    font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;
+    background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .stat-label{font-size:.72rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;}
+
+  /* ─── FLOATING BADGES ─── */
+  .hero-badges{
+    position:absolute;right:5%;top:50%;transform:translateY(-50%);
+    display:flex;flex-direction:column;gap:12px;z-index:2;
+    animation:fadeUp .8s .6s ease both;
+  }
+  .badge{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 16px;background:var(--surface2);border:1px solid var(--border);
+    font-size:.72rem;letter-spacing:.05em;
+    transition:all .25s;white-space:nowrap;
+  }
+  .badge:hover{border-color:var(--accent);transform:translateX(-4px);}
+  .badge-dot{width:8px;height:8px;border-radius:50%;}
+
+  /* ─── SECTION BASE ─── */
+  section{padding:100px 48px;position:relative;}
+  .section-header{margin-bottom:64px;}
+  .section-label{
+    font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:12px;display:flex;align-items:center;gap:8px;
+  }
+  .section-label::before{content:'';display:block;width:24px;height:1px;background:var(--accent);}
+  .section-title{
+    font-family:'Syne',sans-serif;font-weight:800;
+    font-size:clamp(2rem,4vw,3rem);
+    color:var(--white);letter-spacing:-.03em;line-height:1.1;
+  }
+  .section-title span{
+    font-family:'Instrument Serif',serif;font-style:italic;
+    background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+
+  /* ─── SKILLS ─── */
+  #skills{background:var(--surface);}
+  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px;}
+  .skill-card{
+    padding:28px;background:var(--surface2);border:1px solid var(--border);
+    position:relative;overflow:hidden;transition:all .3s;
+  }
+  .skill-card::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .3s;
+  }
+  .skill-card:hover::before{transform:scaleX(1);}
+  .skill-card:hover{border-color:rgba(0,212,255,.3);transform:translateY(-4px);}
+  .skill-category{
+    font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;
+    color:var(--white);margin-bottom:16px;display:flex;align-items:center;gap:10px;
+  }
+  .skill-icon{
+    width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+    background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);font-size:1rem;
+  }
+  .skill-tags{display:flex;flex-wrap:wrap;gap:8px;}
+  .skill-tag{
+    padding:4px 10px;background:rgba(255,255,255,.04);border:1px solid var(--border);
+    font-size:.7rem;color:var(--muted);letter-spacing:.03em;transition:all .2s;
+  }
+  .skill-tag:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* ─── EXPERIENCE ─── */
+  .exp-timeline{position:relative;padding-left:32px;}
+  .exp-timeline::before{
+    content:'';position:absolute;left:0;top:8px;bottom:8px;
+    width:1px;background:linear-gradient(to bottom,var(--accent),var(--accent2));
+  }
+  .exp-item{position:relative;margin-bottom:48px;}
+  .exp-item::before{
+    content:'';position:absolute;left:-38px;top:8px;
+    width:12px;height:12px;background:var(--accent);border-radius:50%;
+    box-shadow:0 0 12px var(--accent);
+  }
+  .exp-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px;}
+  .exp-role{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;color:var(--white);}
+  .exp-company{
+    font-size:.78rem;color:var(--accent);letter-spacing:.05em;
+    padding:3px 10px;border:1px solid rgba(0,212,255,.3);background:rgba(0,212,255,.05);
+  }
+  .exp-period{font-size:.72rem;color:var(--muted);letter-spacing:.08em;}
+  .exp-type{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:12px;}
+  .exp-bullets{list-style:none;display:flex;flex-direction:column;gap:8px;}
+  .exp-bullets li{
+    font-size:.82rem;color:var(--text);opacity:.8;line-height:1.7;
+    padding-left:16px;position:relative;
+  }
+  .exp-bullets li::before{content:'▸';position:absolute;left:0;color:var(--accent);font-size:.7rem;}
+
+  /* ─── PROJECTS ─── */
+  #projects{background:var(--surface);}
+  .projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;}
+  .project-card{
+    background:var(--surface2);border:1px solid var(--border);
+    overflow:hidden;position:relative;transition:all .3s;
+    display:flex;flex-direction:column;
+  }
+  .project-card:hover{border-color:rgba(0,212,255,.4);transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.4);}
+  .project-card-top{
+    padding:24px 24px 0;
+    display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;
+  }
+  .project-num{
+    font-family:'Syne',sans-serif;font-weight:800;font-size:2.5rem;
+    color:var(--border);letter-spacing:-.04em;
+  }
+  .project-links{display:flex;gap:8px;}
+  .project-link{
+    width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+    border:1px solid var(--border);color:var(--muted);font-size:.9rem;
+    text-decoration:none;transition:all .2s;
+  }
+  .project-link:hover{border-color:var(--accent);color:var(--accent);}
+  .project-body{padding:0 24px 24px;flex:1;display:flex;flex-direction:column;}
+  .project-name{
+    font-family:'Syne',sans-serif;font-weight:700;font-size:1.15rem;
+    color:var(--white);margin-bottom:8px;
+  }
+  .project-desc{font-size:.8rem;color:var(--muted);line-height:1.7;margin-bottom:16px;flex:1;}
+  .project-metrics{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+  .metric{
+    padding:4px 10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);
+    font-size:.68rem;color:var(--accent3);letter-spacing:.05em;
+  }
+  .project-stack{display:flex;flex-wrap:wrap;gap:6px;}
+  .stack-tag{
+    padding:3px 8px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);
+    font-size:.65rem;color:rgba(167,139,250,1);letter-spacing:.04em;
+  }
+  .project-bar{height:3px;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .4s;}
+  .project-card:hover .project-bar{transform:scaleX(1);}
+
+  /* ─── CERTIFICATIONS ─── */
+  .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+  .cert-card{
+    padding:24px;background:var(--surface2);border:1px solid var(--border);
+    display:flex;gap:16px;align-items:flex-start;transition:all .3s;
+  }
+  .cert-card:hover{border-color:var(--gold);transform:translateY(-3px);}
+  .cert-icon{
+    width:48px;height:48px;min-width:48px;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);
+    font-size:1.4rem;
+  }
+  .cert-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:var(--white);margin-bottom:4px;}
+  .cert-issuer{font-size:.72rem;color:var(--accent);letter-spacing:.05em;}
+  .cert-period{font-size:.68rem;color:var(--muted);margin-top:4px;}
+
+  /* ─── ACHIEVEMENTS ─── */
+  #achievements{background:var(--surface);}
+  .achievements-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px;}
+  .ach-card{
+    padding:24px;background:var(--surface2);border:1px solid var(--border);
+    position:relative;overflow:hidden;transition:all .3s;
+    display:flex;gap:16px;align-items:flex-start;
+  }
+  .ach-card::after{
+    content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+    background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform .35s;
+  }
+  .ach-card:hover::after{transform:scaleX(1);}
+  .ach-card:hover{transform:translateY(-3px);}
+  .ach-num{
+    font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;
+    color:var(--border);min-width:40px;line-height:1;
+  }
+  .ach-text{font-size:.82rem;color:var(--text);line-height:1.7;opacity:.85;}
+  .ach-highlight{color:var(--gold);font-weight:500;}
+
+  /* ─── VOLUNTEER ─── */
+  .vol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;}
+  .vol-card{
+    padding:24px;background:var(--surface2);border:1px solid var(--border);
+    border-left:3px solid var(--accent2);transition:all .3s;
+  }
+  .vol-card:hover{transform:translateY(-3px);border-left-color:var(--accent);}
+  .vol-role{font-family:'Syne',sans-serif;font-weight:700;color:var(--white);margin-bottom:6px;}
+  .vol-org{font-size:.72rem;color:var(--accent2);letter-spacing:.05em;margin-bottom:10px;}
+  .vol-desc{font-size:.8rem;color:var(--muted);line-height:1.7;}
+
+  /* ─── EDUCATION ─── */
+  .edu-card{
+    padding:36px;background:var(--surface2);border:1px solid var(--border);
+    display:grid;grid-template-columns:1fr auto;gap:24px;align-items:start;
+    max-width:800px;transition:all .3s;
+  }
+  .edu-card:hover{border-color:rgba(0,212,255,.4);}
+  .edu-degree{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--white);margin-bottom:6px;}
+  .edu-field{font-size:.82rem;color:var(--accent);margin-bottom:4px;}
+  .edu-uni{font-size:.8rem;color:var(--text);opacity:.7;margin-bottom:8px;}
+  .edu-period{font-size:.72rem;color:var(--muted);letter-spacing:.08em;}
+  .cgpa{
+    text-align:center;padding:20px 28px;
+    background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);
+  }
+  .cgpa-num{
+    font-family:'Syne',sans-serif;font-weight:800;font-size:2.2rem;
+    background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .cgpa-label{font-size:.65rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:4px;}
+
+  /* ─── CONTACT / FOOTER ─── */
+  #contact{
+    padding:100px 48px 60px;
+    background:linear-gradient(to bottom,var(--bg),#050709);
+    text-align:center;
+  }
+  .contact-email{
+    font-family:'Syne',sans-serif;font-size:clamp(1.4rem,3vw,2rem);
+    font-weight:800;color:var(--white);letter-spacing:-.02em;
+    transition:all .3s;text-decoration:none;display:inline-block;margin-top:24px;
+  }
+  .contact-email:hover{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .social-links{display:flex;justify-content:center;gap:16px;margin-top:32px;}
+  .social-link{
+    padding:10px 20px;border:1px solid var(--border);color:var(--muted);
+    font-size:.75rem;letter-spacing:.08em;text-decoration:none;text-transform:uppercase;
+    transition:all .25s;
+  }
+  .social-link:hover{border-color:var(--accent);color:var(--accent);}
+  .footer-bottom{
+    margin-top:60px;padding-top:24px;border-top:1px solid var(--border);
+    font-size:.7rem;color:var(--muted);letter-spacing:.08em;
+  }
+
+  /* ─── SCROLL REVEAL ─── */
+  .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+  .reveal.visible{opacity:1;transform:none;}
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:none;}}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+
+  /* ─── PROGRESS BARS ─── */
+  .progress-wrap{margin-bottom:14px;}
+  .progress-label{display:flex;justify-content:space-between;font-size:.72rem;color:var(--muted);margin-bottom:6px;}
+  .progress-track{height:4px;background:var(--border);overflow:hidden;}
+  .progress-fill{height:100%;background:var(--grad);transform:scaleX(0);transform-origin:left;transition:transform 1.2s cubic-bezier(.25,.46,.45,.94);}
+
+  /* ─── MOBILE ─── */
+  @media(max-width:768px){
+    nav{padding:16px 20px;}
+    .nav-links{display:none;}
+    section{padding:70px 20px;}
+    #hero{padding:100px 20px 60px;}
+    .hero-stats{gap:24px;flex-wrap:wrap;}
+    .hero-badges{display:none;}
+    .exp-header{flex-direction:column;}
+    .edu-card{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MT.</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#achievements">Wins</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="mailto:piyushmritunjay@gmail.com?subject=Hiring Inquiry&body=Hi Mritunjay, I would like to discuss an opportunity with you." class="nav-cta">Hire Me →</a>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-tag">
+      <span></span>
+      Available for Opportunities
+    </div>
+    <h1 class="hero-name">
+      Mritunjay<br><em>Tiwari</em>
+    </h1>
+    <p class="hero-title">Cloud Architect · DevOps Engineer · Golang Developer</p>
+    <p class="hero-desc">
+      AWS Certified Solutions Architect (SAA-C03) with hands-on experience building cloud-native systems, automating CI/CD pipelines, and delivering full-stack applications. President of a 100-member coding community and open-source contributor.
+    </p>
+    <div class="hero-actions">
+      <a href="#projects" class="btn-primary">View Projects</a>
+      <a href="https://www.linkedin.com/in/mritunjay-tiwari-5050342a1/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BDco8GX%2FnRpmq8BzGBTMQ8Q%3D%3D" class="btn-outline">Get In Touch</a>
+    </div>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num counter" data-target="2">0</div>
+        <div class="stat-label">Internships</div>
+      </div>
+      <div>
+        <div class="stat-num counter" data-target="10">0</div>
+        <div class="stat-label">Cloud Projects</div>
+      </div>
+      <div>
+        <div class="stat-num counter" data-target="6">0</div>
+        <div class="stat-label">HackerRank Certs</div>
+      </div>
+      <div>
+        <div class="stat-num">Top 10</div>
+        <div class="stat-label">National Hackathons</div>
+      </div>
+      <div>
+        <div class="stat-num">AWS</div>
+        <div class="stat-label">Certified Solutions Architect - Associate</div>
+      </div>
+    </div>
+  </div>
+  <!-- Floating Badges -->
+  <div class="hero-badges">
+    <div class="badge"><div class="badge-dot" style="background:#f59e0b;"></div>AWS SAA-C03 Certified</div>
+    <div class="badge"><div class="badge-dot" style="background:#00d4ff;"></div>Golang · Gin · GORM</div>
+    <div class="badge"><div class="badge-dot" style="background:#7c3aed;"></div>Kubernetes · ArgoCD</div>
+    <div class="badge"><div class="badge-dot" style="background:#10b981;"></div>Docker · CI/CD</div>
+    <div class="badge"><div class="badge-dot" style="background:#ef4444;"></div>Open Source Contributor</div>
+  </div>
+</section>
+
+<!-- ═══════════════════ SKILLS ═══════════════════ -->
+<section id="skills">
+  <div class="section-header reveal">
+    <div class="section-label">Technical Arsenal</div>
+    <h2 class="section-title">Skills & <span>Technologies</span></h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal">
+      <div class="skill-category"><div class="skill-icon">☁️</div> Cloud — AWS</div>
+      <div class="skill-tags">
+        <span class="skill-tag">EC2</span><span class="skill-tag">S3</span><span class="skill-tag">Lambda</span><span class="skill-tag">RDS</span><span class="skill-tag">Aurora</span><span class="skill-tag">VPC</span><span class="skill-tag">IAM</span><span class="skill-tag">CloudWatch</span><span class="skill-tag">ECS</span><span class="skill-tag">SQS</span><span class="skill-tag">SNS</span><span class="skill-tag">Route 53</span><span class="skill-tag">ELB</span><span class="skill-tag">Auto Scaling</span><span class="skill-tag">CloudFormation</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category"><div class="skill-icon">🔵</div> Golang</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Gin Framework</span><span class="skill-tag">net/http</span><span class="skill-tag">GORM ORM</span><span class="skill-tag">REST APIs</span><span class="skill-tag">Microservices</span><span class="skill-tag">Goroutines</span><span class="skill-tag">Channels</span><span class="skill-tag">CLI Tools</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category"><div class="skill-icon">⚙️</div> DevOps & CI/CD</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Docker</span><span class="skill-tag">Kubernetes (EKS)</span><span class="skill-tag">Jenkins</span><span class="skill-tag">GitHub Actions</span><span class="skill-tag">ArgoCD</span><span class="skill-tag">CI/CD Pipelines</span><span class="skill-tag">Infrastructure as Code</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category"><div class="skill-icon">🗄️</div> Databases</div>
+      <div class="skill-tags">
+        <span class="skill-tag">PostgreSQL</span><span class="skill-tag">MySQL</span><span class="skill-tag">Oracle SQL</span><span class="skill-tag">Amazon RDS</span><span class="skill-tag">Aurora</span><span class="skill-tag">Normalization</span><span class="skill-tag">Indexing</span><span class="skill-tag">Query Optimization</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category"><div class="skill-icon">💻</div> Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Golang</span><span class="skill-tag">Python</span><span class="skill-tag">SQL</span><span class="skill-tag">Java</span><span class="skill-tag">Bash</span><span class="skill-tag">HTML</span><span class="skill-tag">CSS</span><span class="skill-tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="skill-card reveal">
+      <div class="skill-category"><div class="skill-icon">📊</div> Monitoring & Networking</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Grafana</span><span class="skill-tag">Prometheus</span><span class="skill-tag">CloudWatch</span><span class="skill-tag">TCP/IP</span><span class="skill-tag">DNS</span><span class="skill-tag">HTTP/HTTPS</span><span class="skill-tag">VPC Subnetting</span><span class="skill-tag">Load Balancing</span><span class="skill-tag">OOP</span><span class="skill-tag">Agile</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ EXPERIENCE ═══════════════════ -->
+<section id="experience">
+  <div class="section-header reveal">
+    <div class="section-label">Work History</div>
+    <h2 class="section-title">Professional <span>Experience</span></h2>
+  </div>
+  <div class="exp-timeline">
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Full Stack Developer Intern</div>
+          <div class="exp-type">Remote · Full-time Internship</div>
+        </div>
+        <div style="text-align:right;">
+          <span class="exp-company">ShadowFox</span><br>
+          <span class="exp-period" style="margin-top:6px;display:block;">Jan 2025 – Feb 2025</span>
+        </div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Engineered 3 full-stack web application modules using React.js and Node.js, cutting page load time by <strong style="color:var(--accent3);">30%</strong> through component-level code splitting.</li>
+        <li>Designed RESTful APIs integrated with PostgreSQL for a team of 5 engineers, sustaining <strong style="color:var(--accent3);">95% uptime</strong> and processing <strong style="color:var(--accent3);">500+ daily requests</strong>.</li>
+        <li>Resolved 15+ frontend and backend defects, decreasing user-reported errors by <strong style="color:var(--accent3);">40%</strong> within the 2-month engagement.</li>
+      </ul>
+    </div>
+    <div class="exp-item reveal">
+      <div class="exp-header">
+        <div>
+          <div class="exp-role">Software Development Intern</div>
+          <div class="exp-type">Jamshedpur · On-site Internship</div>
+        </div>
+        <div style="text-align:right;">
+          <span class="exp-company">Lakshmi Electrical & Electronic</span><br>
+          <span class="exp-period" style="margin-top:6px;display:block;">Oct 2024 – Feb 2025</span>
+        </div>
+      </div>
+      <ul class="exp-bullets">
+        <li>Developed an inventory tracking dashboard in Python and Flask, automating stock reporting for <strong style="color:var(--accent3);">500+ SKUs</strong> and saving <strong style="color:var(--accent3);">6 hours/week</strong> of manual work.</li>
+        <li>Optimized MySQL schemas and stored procedures, slashing report generation time by <strong style="color:var(--accent3);">50%</strong> and improving inventory accuracy from 78% to <strong style="color:var(--accent3);">96%</strong>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ PROJECTS ═══════════════════ -->
+<section id="projects">
+  <div class="section-header reveal">
+    <div class="section-label">Engineering Work</div>
+    <h2 class="section-title">Featured <span>Projects</span></h2>
+  </div>
+  <div class="projects-grid">
+
+    <!-- CloudVault -->
+    <div class="project-card reveal">
+      <div class="project-bar"></div>
+      <div class="project-card-top">
+        <div class="project-num">01</div>
+        <div class="project-links">
+          <a href="https://github.com/Mritunjay2005/Resume-Project/tree/main/CloudVault" class="project-link" title="GitHub">⌥</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">CloudVault</div>
+        <div class="project-desc">Secure File Storage & Processing Platform. Cloud-native file platform with pre-signed S3 URLs, IAM least-privilege, event-driven Lambda processing for auto-compression & metadata extraction.</div>
+        <div class="project-metrics">
+          <span class="metric">100% manual processing eliminated</span>
+          <span class="metric">Real-time SNS/SQS alerts</span>
+        </div>
+        <div class="project-stack">
+          <span class="stack-tag">AWS</span><span class="stack-tag">Golang</span><span class="stack-tag">Gin</span><span class="stack-tag">S3</span><span class="stack-tag">Lambda</span><span class="stack-tag">RDS</span><span class="stack-tag">SQS</span><span class="stack-tag">SNS</span><span class="stack-tag">Docker</span><span class="stack-tag">VPC</span><span class="stack-tag">IAM</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- GoTask -->
+    <div class="project-card reveal">
+      <div class="project-bar"></div>
+      <div class="project-card-top">
+        <div class="project-num">02</div>
+        <div class="project-links">
+          <a href="https://github.com/Mritunjay2005/Resume-Project/tree/main/GoTask" class="project-link" title="GitHub">⌥</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">GoTask</div>
+        <div class="project-desc">Real-Time Collaborative Task Management API. Production-ready REST API with JWT auth, RBAC, multi-user collaboration for 50 concurrent users with async goroutine notifications.</div>
+        <div class="project-metrics">
+          <span class="metric">70% latency reduction</span>
+          <span class="metric">80% test coverage</span>
+        </div>
+        <div class="project-stack">
+          <span class="stack-tag">Golang</span><span class="stack-tag">Gin</span><span class="stack-tag">PostgreSQL</span><span class="stack-tag">GORM</span><span class="stack-tag">JWT</span><span class="stack-tag">Goroutines</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AutoScale Notify -->
+    <div class="project-card reveal">
+      <div class="project-bar"></div>
+      <div class="project-card-top">
+        <div class="project-num">03</div>
+        <div class="project-links">
+          <a href="https://github.com/Mritunjay2005/Resume-Project/tree/main/AutoScale_Notify" class="project-link" title="GitHub">⌥</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">AutoScale Notify</div>
+        <div class="project-desc">Serverless Cloud Infrastructure Alert System. Monitors EC2 Auto Scaling & cost anomalies; Lambda queries RDS on breach and dispatches SNS alerts in under 30 seconds.</div>
+        <div class="project-metrics">
+          <span class="metric">&lt;30s alert dispatch</span>
+          <span class="metric">One-command deployments</span>
+        </div>
+        <div class="project-stack">
+          <span class="stack-tag">AWS Lambda</span><span class="stack-tag">CloudWatch</span><span class="stack-tag">SNS</span><span class="stack-tag">SQS</span><span class="stack-tag">CloudFormation</span><span class="stack-tag">RDS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Idle Notifier -->
+    <div class="project-card reveal">
+      <div class="project-bar"></div>
+      <div class="project-card-top">
+        <div class="project-num">04</div>
+        <div class="project-links">
+          <a href="https://github.com/Mritunjay2005/Resume-Project/tree/main/Idle_Notifier" class="project-link" title="GitHub">⌥</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">Idle Notifier</div>
+        <div class="project-desc">AWS Idle Resource Monitoring System. Golang-based tool that detects services idle for 48+ hours and sends automated email alerts for proactive cloud cost optimization.</div>
+        <div class="project-metrics">
+          <span class="metric">80% monitoring effort reduced</span>
+          <span class="metric">Days → Minutes detection</span>
+        </div>
+        <div class="project-stack">
+          <span class="stack-tag">Golang</span><span class="stack-tag">AWS EC2</span><span class="stack-tag">CloudWatch</span><span class="stack-tag">SES</span><span class="stack-tag">AWS SDK</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- K8s GitOps -->
+    <div class="project-card reveal">
+      <div class="project-bar"></div>
+      <div class="project-card-top">
+        <div class="project-num">05</div>
+        <div class="project-links">
+          <a href="https://github.com/Mritunjay2005/Resume-Project/tree/main/K8s_GitOps_Pipeline" class="project-link" title="GitHub">⌥</a>
+        </div>
+      </div>
+      <div class="project-body">
+        <div class="project-name">K8s GitOps Pipeline</div>
+        <div class="project-desc">Self-Healing Microservice Deployment Platform. GitOps CI/CD with GitHub Actions & ArgoCD achieving zero-downtime rolling deployments. Handles 3x traffic spikes with HPA.</div>
+        <div class="project-metrics">
+          <span class="metric">Zero-downtime deploys</span>
+          <span class="metric">3x traffic spike handling</span>
+        </div>
+        <div class="project-stack">
+          <span class="stack-tag">Kubernetes EKS</span><span class="stack-tag">Docker</span><span class="stack-tag">ArgoCD</span><span class="stack-tag">GitHub Actions</span><span class="stack-tag">Prometheus</span><span class="stack-tag">Grafana</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ CERTIFICATIONS ═══════════════════ -->
+<section id="certifications">
+  <div class="section-header reveal">
+    <div class="section-label">Credentials</div>
+    <h2 class="section-title">Certifications & <span>Badges</span></h2>
+  </div>
+  <div class="cert-grid">
+    <div class="cert-card reveal">
+      <div class="cert-icon">🏆</div>
+      <div>
+        <div class="cert-name">AWS Certified Solutions Architect</div>
+        <div class="cert-issuer">Associate (SAA-C03) — Amazon Web Services</div>
+        <div class="cert-period">Valid: 2026 – 2028</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🟩</div>
+      <div>
+        <div class="cert-name">SQL Basic + Intermediate + Advanced</div>
+        <div class="cert-issuer">HackerRank Certification</div>
+        <div class="cert-period">2024 – 2026</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🐍</div>
+      <div>
+        <div class="cert-name">Python Basic</div>
+        <div class="cert-issuer">HackerRank Certification</div>
+        <div class="cert-period">2024 – 2026</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">🔵</div>
+      <div>
+        <div class="cert-name">Go Basic + Go Intermediate</div>
+        <div class="cert-issuer">HackerRank Certification</div>
+        <div class="cert-period">2024 – 2026</div>
+      </div>
+    </div>
+    <div class="cert-card reveal">
+      <div class="cert-icon">⭐</div>
+      <div>
+        <div class="cert-name">5-Star Java Badge</div>
+        <div class="cert-issuer">HackerRank — Top 10% Globally</div>
+        <div class="cert-period">2024 – 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ACHIEVEMENTS ═══════════════════ -->
+<section id="achievements">
+  <div class="section-header reveal">
+    <div class="section-label">Milestones</div>
+    <h2 class="section-title">Key <span>Achievements</span></h2>
+  </div>
+  <div class="achievements-list">
+    <div class="ach-card reveal">
+      <div class="ach-num">01</div>
+      <div class="ach-text">Secured <span class="ach-highlight">Top 10 rank</span> in 4 national-level hackathons competing against <span class="ach-highlight">200+ teams</span> across India.</div>
+    </div>
+    <div class="ach-card reveal">
+      <div class="ach-num">02</div>
+      <div class="ach-text">Published a <span class="ach-highlight">peer-reviewed research paper</span> in the college academic journal during <span class="ach-highlight">first year</span> of B.E.</div>
+    </div>
+    <div class="ach-card reveal">
+      <div class="ach-num">03</div>
+      <div class="ach-text">Attained <span class="ach-highlight">AWS SAA-C03 on first attempt</span> as a 2nd-year undergraduate — among the first at Vikram University.</div>
+    </div>
+    <div class="ach-card reveal">
+      <div class="ach-num">04</div>
+      <div class="ach-text">Earned <span class="ach-highlight">6 HackerRank certifications</span> and a 5-star Java badge, ranking in the <span class="ach-highlight">top 10% globally</span>.</div>
+    </div>
+    <div class="ach-card reveal">
+      <div class="ach-num">05</div>
+      <div class="ach-text">Grew the coding community membership by <span class="ach-highlight">60% in one academic year</span>, onboarding 40 new active members as president.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ VOLUNTEER ═══════════════════ -->
+<section id="volunteer">
+  <div class="section-header reveal">
+    <div class="section-label">Community</div>
+    <h2 class="section-title">Volunteer & <span>Leadership</span></h2>
+  </div>
+  <div class="vol-grid">
+    <div class="vol-card reveal">
+      <div class="vol-role">President — College Coding Community</div>
+      <div class="vol-org">2025 – 2026 · 100-Member Community</div>
+      <div class="vol-desc">Led 10+ workshops and hackathon preparation sessions for 100 students. Grew membership by 60% in one academic year.</div>
+    </div>
+    <div class="vol-card reveal">
+      <div class="vol-role">Open Source Contributor</div>
+      <div class="vol-org">GitHub · Ongoing</div>
+      <div class="vol-desc">Submitted pull requests to 5+ DevOps and Golang repositories, contributing improvements and fixes to the community.</div>
+    </div>
+    <div class="vol-card reveal">
+      <div class="vol-role">Peer Mentor</div>
+      <div class="vol-org">AWS · DevOps · Golang</div>
+      <div class="vol-desc">Conducted 20+ structured mentoring sessions on AWS, DevOps, and Golang with <strong>90% positive mentee feedback</strong>.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ EDUCATION ═══════════════════ -->
+<section id="education">
+  <div class="section-header reveal">
+    <div class="section-label">Academic Background</div>
+    <h2 class="section-title">Education</h2>
+  </div>
+  <div class="edu-card reveal">
+    <div>
+      <div class="edu-degree">Bachelor of Engineering — B.E.</div>
+      <div class="edu-field">Computer Science Engineering · Specialization in Electronics</div>
+      <div class="edu-uni">SOET, Vikram University, Ujjain, Madhya Pradesh</div>
+      <div class="edu-period">Aug 2023 – Present · 5th Semester</div>
+    </div>
+    <div class="cgpa">
+      <div class="cgpa-num">8.1</div>
+      <div class="cgpa-label">CGPA / 10</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ CONTACT ═══════════════════ -->
+<section id="contact">
+  <div class="section-label" style="justify-content:center;margin-bottom:16px;">Get In Touch</div>
+  <h2 class="section-title" style="font-size:clamp(2rem,5vw,3.5rem);">Let's Build<br><span>Something Great</span></h2>
+  <a href="mailto:piyushmritunjay@gmail.com" class="contact-email">piyushmritunjay@gmail.com</a>
+  <p style="color:var(--muted);font-size:.78rem;margin-top:8px;">+91 6201751985</p>
+  <div class="social-links">
+    <a href="https://www.linkedin.com/in/mritunjay-tiwari-5050342a1/?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BDco8GX%2FnRpmq8BzGBTMQ8Q%3D%3D" target="_blank" class="social-link">LinkedIn ↗</a>
+    <a href="https://github.com/Mritunjay2005" target="_blank" class="social-link">GitHub ↗</a>
+    <a href="#" target="_blank" class="social-link">Portfolio ↗</a>
+  </div>
+  <div class="footer-bottom">
+    © 2025 Mritunjay Tiwari · Designed & Developed with care
+  </div>
+</section>
+
+<script>
+  // ─── CUSTOM CURSOR ───
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX;my=e.clientY;
+    cursor.style.left=mx+'px';cursor.style.top=my+'px';
+  });
+  function animRing(){
+    rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+  document.querySelectorAll('a,button,.skill-card,.project-card,.cert-card,.ach-card,.vol-card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{
+      cursor.style.width='6px';cursor.style.height='6px';
+      ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='var(--accent2)';
+    });
+    el.addEventListener('mouseleave',()=>{
+      cursor.style.width='12px';cursor.style.height='12px';
+      ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='var(--accent)';
+    });
+  });
+
+  // ─── SCROLL REVEAL ───
+  const reveals=document.querySelectorAll('.reveal');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        setTimeout(()=>e.target.classList.add('visible'),i*60);
+      }
+    });
+  },{threshold:.1});
+  reveals.forEach(el=>obs.observe(el));
+
+  // ─── COUNTER ANIMATION ───
+  function animateCounter(el){
+    const target=parseInt(el.dataset.target);
+    let current=0;
+    const step=target/40;
+    const timer=setInterval(()=>{
+      current+=step;
+      if(current>=target){current=target;clearInterval(timer);}
+      el.textContent=Math.floor(current)+'+';
+    },30);
+  }
+  const counters=document.querySelectorAll('.counter');
+  const counterObs=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{if(e.isIntersecting){animateCounter(e.target);counterObs.unobserve(e.target);}});
+  },{threshold:.5});
+  counters.forEach(c=>counterObs.observe(c));
+
+  // ─── NAV SCROLL EFFECT ───
+  window.addEventListener('scroll',()=>{
+    const nav=document.querySelector('nav');
+    nav.style.background=window.scrollY>60?'rgba(8,12,16,.98)':'rgba(8,12,16,.85)';
+  });
+
+  // ─── ACTIVE NAV HIGHLIGHT ───
+  const sections=document.querySelectorAll('section[id]');
+  const navLinks=document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll',()=>{
+    let current='';
+    sections.forEach(s=>{
+      if(window.scrollY>=s.offsetTop-100) current=s.id;
+    });
+    navLinks.forEach(a=>{
+      a.style.color=a.getAttribute('href')==='#'+current?'var(--accent)':'';
+    });
+  });
+</script>
+</body>
+</html>
